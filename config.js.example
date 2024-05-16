@@ -1,0 +1,14 @@
+module.exports = {
+    /*
+    connection: {
+        user: 'idc-project',
+        host: 'tcp:idc-project.database.windows.net',
+        database: 'iDC-Project',
+        password: '@Rao440841',
+        port: 1433
+    },
+    */
+    connection_string: 'Driver={ODBC Driver 18 for SQL Server};Server=tcp:idc-project.database.windows.net,1433;Database=iDC-Project;Uid=idc-project;Pwd=@Rao440841;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;',
+    default_port: 7000
+};
+
