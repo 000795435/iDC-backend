@@ -149,4 +149,24 @@ router.get('/get_movie_by_keywords', async (req, res) => {
     }
 });
 
+router.get('/get_movie_by_id', async (req, res) => {
+    try {
+        if (!req.query.movie_id)
+            return res.status(400).json({ success: false, message: 'Please provide movie id.' });
+
+        let results = await Movie.getMovieById((req.query.movie_id).replaceAll("'", "''"));
+        let result = results[0];
+
+        let movie_list = [];
+        result.forEach(item => {
+            movie_list.push(new MovieObject(item[0], item[1], item[2], item[3], item[4], item[5], item[6], item[7], item[8], item[9]));
+        })
+
+        return res.status(200).json({ success: true, data: movie_list });
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({ success: false, message: "Fail to get data" });
+    }
+});
+
 module.exports = router;

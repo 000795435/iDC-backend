@@ -21,6 +21,18 @@ module.exports = {
 
     },
 
+    getMovieById: async (movie_id) => {
+        let query = `SELECT mm.id, mm.genres, mm.original_title, mm.overview, mm.poster_path, mm.production_companies, mm.release_date, mm.runtime, c.cast, k.keywords
+                        FROM movies_metadata mm
+                        LEFT JOIN credits c
+                        ON TRY_CONVERT(int, mm.id) = TRY_CONVERT(int, c.id)
+                        LEFT JOIN keywords k
+                        ON TRY_CONVERT(int, mm.id) = TRY_CONVERT(int, k.id)
+                        WHERE TRY_CONVERT(int, mm.id) =  ${movie_id};`;
+
+        return (await executeGetQuery(query));
+    },
+
     getMovieByTitle: async (movie_title) => {
         let query = `SELECT mm.id, mm.genres, mm.original_title, mm.overview, mm.poster_path, mm.production_companies, mm.release_date, mm.runtime, c.cast, k.keywords
                         FROM movies_metadata mm
