@@ -96,5 +96,31 @@ module.exports = {
                         ORDER BY newid();`;
 
         return (await executeGetQuery(query));
+    },
+
+    getNewestMovie: async () => {
+        let query = `SELECT top(10) mm.id, mm.genres, mm.original_title, mm.overview, mm.poster_path, mm.production_companies, mm.release_date, mm.runtime, c.cast, k.keywords
+                        FROM movies_metadata mm
+                        LEFT JOIN credits c
+                        ON TRY_CONVERT(int, mm.id) = TRY_CONVERT(int, c.id)
+                        LEFT JOIN keywords k
+                        ON TRY_CONVERT(int, mm.id) = TRY_CONVERT(int, k.id)
+                        WHERE mm.original_title NOT LIKE '?%'
+                        ORDER BY mm.release_date desc;`;
+
+        return (await executeGetQuery(query));
+    },
+
+    getPopularMovie: async () => {
+        let query = `SELECT top(10) mm.id, mm.genres, mm.original_title, mm.overview, mm.poster_path, mm.production_companies, mm.release_date, mm.runtime, c.cast, k.keywords
+                        FROM movies_metadata mm
+                        LEFT JOIN credits c
+                        ON TRY_CONVERT(int, mm.id) = TRY_CONVERT(int, c.id)
+                        LEFT JOIN keywords k
+                        ON TRY_CONVERT(int, mm.id) = TRY_CONVERT(int, k.id)
+                        WHERE mm.original_title NOT LIKE '?%'
+                        ORDER BY TRY_CONVERT(decimal(10,5),(CAST(mm.popularity AS varchar(10)))) desc;`;
+
+        return (await executeGetQuery(query));
     }
 };
